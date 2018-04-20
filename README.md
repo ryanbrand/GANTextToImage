@@ -7,6 +7,8 @@ Final project for COMS W4995-2 at Columbia University, Spring 2018
 - https://github.com/hanzhanggit/StackGAN-v2
 
 ### Dependencies
+Ubuntu 14.04 with CUDA 8 and cudNN 6 installed for GPU
+
 Follow these instructions to install Torch with LuaJIT: `http://torch.ch/docs/getting-started.html`
 
 Create anaconda3 environment using `conda create -n <name> --file pytorch_requirements.txt`
