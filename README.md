@@ -14,3 +14,8 @@ Create anaconda3 environment using `conda create -n <name> --file pytorch_requir
 - `python-dateutil`
 - `easydict`
 - `pandas`
+
+### Primary References
+- https://github.com/reedscot/cvpr2016
+- https://github.com/reedscot/icml2016
+- https://github.com/hanzhanggit/StackGAN-v2
