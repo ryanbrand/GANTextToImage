@@ -1,6 +1,8 @@
 # GANTextToImage
 
 ### Dependencies
+Follow these instructions to install Torch with LuaJIT: `http://torch.ch/docs/getting-started.html`
+
 Create anaconda3 environment using `conda create -n <name> --file pytorch_requirements.txt`
 
 `pip install` the following packages in your environment:
