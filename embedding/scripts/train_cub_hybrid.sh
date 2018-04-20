@@ -1,6 +1,6 @@
 
 th train_sje_hybrid.lua \
-  -data_dir /home/rmb2208/cvpr_data/cub \
+  -data_dir ../data/birds/cvpr \
   -image_dir images \
   -ids_file trainvalids.txt \
   -learning_rate 0.0007 \
