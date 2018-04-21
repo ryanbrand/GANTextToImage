@@ -16,7 +16,7 @@ TRAIN:
     NET_G: ''  # 'output/birds_3stages/Model/netG_epoch_700.pth'
     NET_D: ''  # 'output/birds_3stages/Model/netD'
     BATCH_SIZE: 24
-    MAX_EPOCH: 50
+    MAX_EPOCH: 100
     SNAPSHOT_INTERVAL: 2000
     DISCRIMINATOR_LR: 0.0002
     GENERATOR_LR: 0.0002
