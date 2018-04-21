@@ -1,6 +1,8 @@
 from __future__ import print_function
 import torch
 import torchvision.transforms as transforms
+from torch.utils.serialization import load_lua
+
 
 import torch.backends.cudnn as cudnn
 import torch
@@ -100,12 +102,12 @@ def test(cfg_file, embedding_t7_path):
     print(netG)
     #state_dict = torch.load('../gan/models/birds_3stages/netG_26000.pth')
     print(cfg.TRAIN.NET_G)
-    state_dict = torch.load('../gan/models/birds_3stages/netG_26000.pth',map_location=lambda storage, loc: storage)
+    state_dict = torch.load('../gan/models/birds_3stages/netG_210000.pth',map_location=lambda storage, loc: storage)
     netG.load_state_dict(state_dict)
-    print('Load ', '../gan/models/birds_3stages/netG_26000.pth')
+    print('Load ', '../gan/models/birds_3stages/netG_210000.pth')
 
     # the path to save generated images
-    s_tmp = '.'
+    s_tmp = cfg.TRAIN.NET_G
     istart = s_tmp.rfind('_') + 1
     iend = s_tmp.rfind('.')
     iteration = int(s_tmp[istart:iend])
@@ -121,8 +123,8 @@ def test(cfg_file, embedding_t7_path):
     # switch to evaluate mode
     netG.eval()
 
-    t_embedding = torch.load_lua(embedding_t7_path)
-
+    t_embedding = load_lua(embedding_t7_path)
+    t_embedding = t_embedding.unsqueeze(0)
     print(t_embedding.size())   
 
     if cfg.CUDA:
@@ -136,25 +138,25 @@ def test(cfg_file, embedding_t7_path):
     noise.data.normal_(0, 1)
 
     fake_img_list = []
-    for i in range(embedding_dim):
-        fake_imgs, _, _ = netG(noise, t_embeddings[:, i, :])
-        if cfg.TEST.B_EXAMPLE:
+    # for i in range(embedding_dim):
+    fake_imgs, _, _ = netG(noise, t_embedding[:, 0, :])
+    if cfg.TEST.B_EXAMPLE:
             # fake_img_list.append(fake_imgs[0].data.cpu())
             # fake_img_list.append(fake_imgs[1].data.cpu())
-            fake_img_list.append(fake_imgs[2].data.cpu())
-        else:
-            self.save_singleimages(fake_imgs[-1], '.', '.', i, 256)
+        fake_img_list.append(fake_imgs[2].data.cpu())
+    else:
+        save_singleimages(fake_imgs[-1], '.', 0, 256)
             # self.save_singleimages(fake_imgs[-2], filenames,
             #                        save_dir, split_dir, i, 128)
             # self.save_singleimages(fake_imgs[-3], filenames,
             #                        save_dir, split_dir, i, 64)
         # break
-    if cfg.TEST.B_EXAMPLE:
-        # self.save_superimages(fake_img_list, filenames,
-        #                       save_dir, split_dir, 64)
-        # self.save_superimages(fake_img_list, filenames,
-        #                       save_dir, split_dir, 128)
-        self.save_superimages(fake_img_list, '.', 256)
+    # if cfg.TEST.B_EXAMPLE:
+    #     # self.save_superimages(fake_img_list, filenames,
+    #     #                       save_dir, split_dir, 64)
+    #     # self.save_superimages(fake_img_list, filenames,
+    #     #                       save_dir, split_dir, 128)
+    #     save_superimages(fake_img_list, '.', 256)
 
 
 if __name__ == "__main__":

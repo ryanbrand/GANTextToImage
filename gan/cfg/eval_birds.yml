@@ -16,7 +16,7 @@ TEST:
 
 TRAIN:
     FLAG: False
-    NET_G: '../models/birds_3stages/netG_26000.pth'
+    NET_G: 'models/birds_3stages/netG_210000.pth'
     BATCH_SIZE: 24
 
 

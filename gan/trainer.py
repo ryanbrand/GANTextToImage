@@ -564,9 +564,12 @@ class condGANTrainer(object):
                 # print(t_embeddings[:, 0, :], t_embeddings.size(1))
 
                 embedding_dim = t_embeddings.size(1)
+                print(embedding_dim)
                 batch_size = imgs[0].size(0)
                 noise.data.resize_(batch_size, nz)
                 noise.data.normal_(0, 1)
+
+                print(t_embeddings.size())
 
                 fake_img_list = []
                 for i in range(embedding_dim):
