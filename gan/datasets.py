@@ -64,7 +64,7 @@ def get_imgs(img_path, imsize, bbox=None,
 
     return ret
 
-
+# Process image data from folder
 class ImageFolder(data.Dataset):
     def __init__(self, root, split_dir='train', custom_classes=None,
                  base_size=64, transform=None, target_transform=None):
@@ -129,7 +129,7 @@ class ImageFolder(data.Dataset):
     def __len__(self):
         return len(self.imgs)
 
-
+# Process correspond text caption data
 class TextDataset(data.Dataset):
     def __init__(self, data_dir, split='train', embedding_type='cnn-rnn',
                  base_size=64, transform=None, target_transform=None):
