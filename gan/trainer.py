@@ -19,7 +19,7 @@ from miscc.utils import mkdir_p
 from tensorboard import summary
 from tensorboard import FileWriter
 
-from model import G_NET, D_NET64, D_NET128, D_NET256, D_NET512, D_NET1024, INCEPTION_V3
+from model import G_NET, D_NET64, D_NET128, D_NET256, INCEPTION_V3
 
 # Helper functions
 def compute_mean_covariance(img):
@@ -114,11 +114,6 @@ def load_network(gpus):
         netsD.append(D_NET128())
     if cfg.TREE.BRANCH_NUM > 2:
         netsD.append(D_NET256())
-    if cfg.TREE.BRANCH_NUM > 3:
-        netsD.append(D_NET512())
-    if cfg.TREE.BRANCH_NUM > 4:
-        netsD.append(D_NET1024())
-    # TODO: if cfg.TREE.BRANCH_NUM > 5:
 
     for i in range(len(netsD)):
         netsD[i].apply(weights_init)
