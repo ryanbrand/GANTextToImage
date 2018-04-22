@@ -16,7 +16,7 @@ TEST:
 
 TRAIN:
     FLAG: False
-    NET_G: 'models/flowers_2stages'
+    NET_G: 'models/flowers_2stages/netG_21000.pth'
     BATCH_SIZE: 24
 
 

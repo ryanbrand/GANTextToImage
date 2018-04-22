@@ -10,6 +10,6 @@ query_str=$query \
 embedding_net=$embedding_net \
 th save_bird_embeddings.lua
 
-python ../gan/test.py './bird_test_embedding.t7'
+python ../gan/test.py './bird_test_embedding.t7' --cfg=../gan/cfg/eval_birds.yml
 
 #rm "./bird_test_embedding.t7"
