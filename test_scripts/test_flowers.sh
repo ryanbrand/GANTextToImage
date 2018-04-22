@@ -10,6 +10,6 @@ query_str=$query \
 embedding_net=$embedding_net \
 th save_flower_embeddings.lua
 
-python ../train.py stage1 ../pretrained_checkpoints/run1 --mode=eval --test_description="$query" --test_embedding="./flower_test_embedding.t7"
+python ../gan/test.py './flower_test_embedding.t7' --cfg=../gan/cfg/eval_flowers.yml
 
-rm "./flower_test_embedding.t7"
+# rm "./flower_test_embedding.t7"

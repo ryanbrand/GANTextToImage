@@ -102,9 +102,10 @@ def test(cfg_file, embedding_t7_path):
     print(netG)
     #state_dict = torch.load('../gan/models/birds_3stages/netG_26000.pth')
     print(cfg.TRAIN.NET_G)
-    state_dict = torch.load('../gan/models/birds_3stages/netG_210000.pth',map_location=lambda storage, loc: storage)
+    state_path = '../gan/' + cfg.TRAIN.NET_G
+    state_dict = torch.load(state_path, map_location=lambda storage, loc: storage)
     netG.load_state_dict(state_dict)
-    print('Load ', '../gan/models/birds_3stages/netG_210000.pth')
+    # print('Load ', '../gan/models/flowers_1stage/netG_6000.pth')
 
     # the path to save generated images
     s_tmp = cfg.TRAIN.NET_G

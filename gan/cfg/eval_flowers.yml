@@ -1,4 +1,4 @@
-CONFIG_NAME: '3stages'
+CONFIG_NAME: '2stage'
 
 DATASET_NAME: 'flowers'
 EMBEDDING_TYPE: 'cnn-rnn'
@@ -7,7 +7,7 @@ GPU_ID: '0'
 WORKERS: 1  # 4
 
 TREE:
-    BRANCH_NUM: 3
+    BRANCH_NUM: 2
 
 
 TEST:
@@ -16,7 +16,7 @@ TEST:
 
 TRAIN:
     FLAG: False
-    NET_G: 'models/birds_3stages/netG_26000.pth'
+    NET_G: 'models/flowers_2stages'
     BATCH_SIZE: 24
 
 
