@@ -13,10 +13,10 @@ TREE:
 
 TRAIN:
     FLAG: True
-    NET_G: ''  # 'output/birds_3stages/Model/netG_epoch_700.pth'
-    NET_D: ''  # 'output/birds_3stages/Model/netD'
+    NET_G: '../output/flowers_2stages_2018_04_22_15_13_45/Model/netG_29300.pth'  # 'output/birds_3stages/Model/netG_epoch_700.pth'
+    NET_D: '../output/flowers_2stages_2018_04_22_15_13_45/Model/netD'  # 'output/birds_3stages/Model/netD'
     BATCH_SIZE: 24
-    MAX_EPOCH: 100
+    MAX_EPOCH: 500
     SNAPSHOT_INTERVAL: 1000
     DISCRIMINATOR_LR: 0.0002
     GENERATOR_LR: 0.0002
