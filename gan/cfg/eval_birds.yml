@@ -1,4 +1,4 @@
-CONFIG_NAME: '3stages'
+CONFIG_NAME: '2stages'
 
 DATASET_NAME: 'birds'
 EMBEDDING_TYPE: 'cnn-rnn'
@@ -7,7 +7,7 @@ GPU_ID: '0'
 WORKERS: 1  # 4
 
 TREE:
-    BRANCH_NUM: 3
+    BRANCH_NUM: 2
 
 
 TEST:
