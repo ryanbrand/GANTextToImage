@@ -1,15 +1,4 @@
 from __future__ import print_function
-import torch
-import torchvision.transforms as transforms
-from torch.utils.serialization import load_lua
-
-
-import torch.backends.cudnn as cudnn
-import torch
-import torch.nn as nn
-from torch.autograd import Variable
-import torch.optim as optim
-import torchvision.utils as vutils
 import numpy as np
 import os
 import time
@@ -24,6 +13,15 @@ import pprint
 import datetime
 import dateutil.tz
 import time
+
+import torch
+import torch.backends.cudnn as cudnn
+import torch.nn as nn
+import torch.optim as optim
+from torch.autograd import Variable
+from torch.utils.serialization import load_lua
+import torchvision.transforms as transforms
+import torchvision.utils as vutils
 
 dir_path = (os.path.abspath(os.path.join(os.path.realpath(__file__), './.')))
 sys.path.append(dir_path)
