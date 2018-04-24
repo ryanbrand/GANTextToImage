@@ -22,3 +22,8 @@ Create anaconda3 environment using `conda create -n <name> --file pytorch_requir
 - `python-dateutil`
 - `easydict`
 - `pandas`
+
+### Testing
+python2 GANTextToImage/gan/test.py --cfg="cfg_file" embedding_file_path=""
+feed embedding in as embedding_file_path=
+
