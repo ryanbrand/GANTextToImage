@@ -57,7 +57,7 @@ def save_superimages(images_list, save_dir, imsize):
         super_img = torch.cat(super_img, 0)
         vutils.save_image(super_img, savename, nrow=10, normalize=True)
 
-def save_singleimages(images,save_dir, sentenceID, imsize):
+def save_singleimages(images, save_dir, sentenceID, imsize):
     for i in range(images.size(0)):
         s_tmp = '%s/single_samples' %\
             (save_dir)
@@ -168,7 +168,7 @@ if __name__ == "__main__":
     parser.add_argument('--gpu', dest='gpu_id', type=str, default='0')
     parser.add_argument('--data_dir', dest='data_dir', type=str, default='.')
     parser.add_argument('--manualSeed', type=int, help='manual seed')
-    
+ 
     args = parser.parse_args()
-    
+ 
     test(args.cfg_file, args.embedding_file_path)
