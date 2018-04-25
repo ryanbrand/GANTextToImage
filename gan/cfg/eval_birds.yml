@@ -2,7 +2,7 @@ CONFIG_NAME: '3stages'
 
 DATASET_NAME: 'birds'
 EMBEDDING_TYPE: 'cnn-rnn'
-DATA_DIR: '../data/birds'
+DATA_DIR: '/home/ubuntu/GANTextToImage/data/birds'
 GPU_ID: '0'
 WORKERS: 1  # 4
 

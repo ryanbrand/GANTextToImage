@@ -100,7 +100,7 @@ def test(cfg_file, embedding_t7_path):
     print(netG)
     #state_dict = torch.load('../gan/models/birds_3stages/netG_26000.pth')
     print(cfg.TRAIN.NET_G)
-    state_path = '../gan/' + cfg.TRAIN.NET_G
+    state_path = '/home/ubuntu/GANTextToImage/gan/' + cfg.TRAIN.NET_G
     state_dict = torch.load(state_path, map_location=lambda storage, loc: storage)
     netG.load_state_dict(state_dict)
     # print('Load ', '../gan/models/flowers_1stage/netG_6000.pth')
@@ -144,7 +144,7 @@ def test(cfg_file, embedding_t7_path):
             # fake_img_list.append(fake_imgs[1].data.cpu())
         fake_img_list.append(fake_imgs[2].data.cpu())
     else:
-        save_singleimages(fake_imgs[-1], '.', 0, 256)
+        save_singleimages(fake_imgs[-1], '/home/ubuntu/GANTextToImage/static', 0, 256)
             # self.save_singleimages(fake_imgs[-2], filenames,
             #                        save_dir, split_dir, i, 128)
             # self.save_singleimages(fake_imgs[-3], filenames,
