@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+    TODO:
+        1.  Icon on right instead of text
+        2.  Button flush against search box
+        3.  More subtle flattery
+        4.  Test with actual image to make sure all alignment is correct
+
+        5.  I edited a different show.html and server.py somewhere
+ -->
+
+{% extends "layout.html" %}
+{% block content %}
+    <div class="index">
+            <div style="text-align:center;">     
+                <form method="POST" action="/generator">
+                    <input type="text" name="input" placeholder="Describe an image">
+<!--   expanded, 34% of the screen is about 70 chars -->
+<!--            <button class="rounded-on-right">Go</button> -->
+                </form>
+            </div>              
+        <h6><br></br></h6>      
+        <img src="{{url_for('static', filename='tree.jpg')}}" alt="generated image" class="center"/>
+    </div>
+{% endblock %}
+
+
+<!--
+            <p align="center">
+                <div class="input-group">
+ -->
+
+<!--
+                </div>
+            </p>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
