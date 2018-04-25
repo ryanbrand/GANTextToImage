@@ -59,6 +59,7 @@ def conv3x3(in_planes, out_planes):
 
 # ############## G networks ################################################
 # Upsale the spatial size by a factor of 2
+
 def upBlock(in_planes, out_planes):
     block = nn.Sequential(
         nn.Upsample(scale_factor=2, mode='nearest'),
