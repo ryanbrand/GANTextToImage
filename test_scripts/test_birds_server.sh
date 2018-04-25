@@ -11,4 +11,4 @@ python /home/ubuntu/repo/gan/test.py '/home/ubuntu/repo/test_scripts/bird_test_e
 
 # python /home/bsk2133/code/GANTextToImage/gan/test.py '/home/bsk2133/code/GANTextToImage/test_scripts/bird_test_embedding.t7' --cfg=/home/bsk2133/code/GANTextToImage/gan/cfg/eval_birds.yml
 
-rm "./bird_test_embedding.t7"
+rm /home/ubuntu/repo/test_scripts/bird_test_embedding.t7
