@@ -1,5 +1,6 @@
 #!/usr/bin/env python2.7
 
+import time
 import os
 import subprocess
 from flask import Flask, request, render_template, g, redirect, Response
@@ -12,15 +13,17 @@ def index():
   print request.args
   return render_template("index.html")
 
-@app.route('/generator', methods=['POST'])
+@app.route('/generator', methods=['POST','GET'])
 def generator():
   text = request.form['input_text']
   print(text)
-  text_file = open("/home/ubuntu/icml2016/scripts/cub_queries.txt", "w")
-  text_file.write(text + "\n")
-  text_file.close()
   print "start"
-  subprocess.call("/home/ubuntu/icml2016/scripts/demo_cub.sh", shell=True)
+  cmd = ["/home/ubuntu/GANTextToImage/test_scripts/test_birds_server.sh", "\"" + text + "\""]
+  #return_value = subprocess.check_call(cmd, shell=True)
+  return_value = subprocess.call(cmd)
+  
+  #output = p.stdout.read()
+  print return_value
   print "end"
   return render_template("index2.html")
 
