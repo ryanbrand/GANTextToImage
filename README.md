@@ -1,4 +1,4 @@
-# End-To-End Text To Image Synthesis Pipeline with Hierarchical Conditional Generative Adversarial Networks
+# End-To-End Text To Image Synthesis Pipeline using Hierarchical Conditional Generative Adversarial Networks (with Server)
 Final project for COMS W4995-2 at Columbia University, Spring 2018
 
 ### Primary References
