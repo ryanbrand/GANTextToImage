@@ -36,19 +36,25 @@ Create anaconda3 environment using `conda create -n <name> --file pytorch_requir
 2. Modify the eval bash script (e.g. `eval_cub_cls.sh` for birds) to point to your saved checkpoint.
 3. Run the eval script: `./eval_cub_cls.sh`
 
-### Training (Conditional GAN)
+### Training (Conditional GAN):
 
 1. Download the [birds](https://drive.google.com/file/d/0B0ywwgffWnLLLUc2WHYzM0Q2eWc/view?usp=sharing) and [flowers](https://drive.google.com/file/d/0B0ywwgffWnLLMl9uOU91MV80cVU/view?usp=sharing) caption data in Torch format and save to `data/`.  You may also use your own trained embeddings if saved to a pickle file of the same format. 
 2. Download the [birds](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html) and [flowers](http://www.robots.ox.ac.uk/~vgg/data/flowers/102) image data and save to `data/birds/` and `data/flowers/`, repectively.
-3. Train a hierarchical model on the bird (CUB) or flower (Oxford-102) datasets using preprocessed embeddings:
+3. Navigate to `gan/` and train a hierarchical model on the bird (CUB) or flower (Oxford-102) datasets using preprocessed embeddings by running the following:
   -  `python main.py --cfg cfg/<bird_config.yml> --gpu 0`
   -  `python main.py --cfg cfg/<flower_config.yml> --gpu 0`
   
-### Evaluation (Conditional GAN)
+### Evaluation (Conditional GAN):
 
 1. Train a model (see above)
-2. Modify appropriate `.yml` file to point to your saved checkpoint.
-3. Evaluate a hierarchical model on the bird (CUB) or flower (Oxford-102) datasets using pretrained network:
+2. Modify `gan/cfg/eval_<dataset>.yml` file to point to the saved checkpoint.
+3. Navigate to `gan/` and evaluate a hierarchical model on the bird (CUB) or flower (Oxford-102) datasets using pretrained network by running the following:
   - `python main.py --cfg cfg/eval_birds.yml --gpu 0` to generate samples from captions in birds validation set.
   - `python main.py --cfg cfg/eval_flowers.yml --gpu 0` to generate samples from captions in flowers validation set.
+  
+### Running Bird Text-To-Image Synthesis Server
+
+1. Train or download both an embedding model and a conditional GAN model for the CUB birds dataset (see above)
+2. Modify `test_scripts/test_birds_server.sh` to point to desired embedding network and `gan/cfg/eval_birds.yml` to point to the saved checkpoint you wish to use for the GAN.
+3. Run `python server.py` and access server at `<Your IP Address>:6007`.
 
