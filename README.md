@@ -40,7 +40,7 @@ Create anaconda3 environment using `conda create -n <name> --file pytorch_requir
 
 1. Download the [birds](https://drive.google.com/file/d/0B0ywwgffWnLLLUc2WHYzM0Q2eWc/view?usp=sharing) and [flowers](https://drive.google.com/file/d/0B0ywwgffWnLLMl9uOU91MV80cVU/view?usp=sharing) caption data in Torch format and save to `data/`.  You may also use your own trained embeddings if saved to a pickle file of the same format. 
 2. Download the [birds](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html) and [flowers](http://www.robots.ox.ac.uk/~vgg/data/flowers/102) image data and save to `data/birds/` and `data/flowers/`, repectively.
-3. Train a StackGAN-v2 model on the bird (CUB) or flower (Oxford-102) datasets using preprocessed embeddings:
+3. Train a hierarchical model on the bird (CUB) or flower (Oxford-102) datasets using preprocessed embeddings:
   -  `python main.py --cfg cfg/<bird_config.yml> --gpu 0`
   -  `python main.py --cfg cfg/<flower_config.yml> --gpu 0`
   
@@ -48,7 +48,7 @@ Create anaconda3 environment using `conda create -n <name> --file pytorch_requir
 
 1. Train a model (see above)
 2. Modify appropriate `.yml` file to point to your saved checkpoint.
-3. For each dataset:
-  - Run `python main.py --cfg cfg/eval_birds.yml --gpu 0` to generate samples from captions in birds validation set.
-  - Run `python main.py --cfg cfg/eval_flowers.yml --gpu 0` to generate samples from captions in flowers validation set.
+3. Evaluate a hierarchical model on the bird (CUB) or flower (Oxford-102) datasets using pretrained network:
+  - `python main.py --cfg cfg/eval_birds.yml --gpu 0` to generate samples from captions in birds validation set.
+  - `python main.py --cfg cfg/eval_flowers.yml --gpu 0` to generate samples from captions in flowers validation set.
 
