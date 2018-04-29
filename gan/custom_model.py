@@ -333,7 +333,7 @@ class D_NET64(nn.Module):
         ndf = self.df_dim
         efg = self.ef_dim
         self.img_code_s16 = encode_image_by_16times(ndf) 
-        self.pixelwise_map = Block3x3_leakRelu(ndf // 16, 1)
+        self.pixelwise_map = Block3x3_leakRelu(ndf*8, 1)
 
         self.logits = nn.Sequential(
             nn.Conv2d(ndf * 8, 1, kernel_size=4, stride=4),
@@ -382,7 +382,7 @@ class D_NET128(nn.Module):
         self.img_code_s16 = encode_image_by_16times(ndf)
         self.img_code_s32 = downBlock(ndf * 8, ndf * 16)
         self.img_code_s32_1 = Block3x3_leakRelu(ndf * 16, ndf * 8)
-        self.pixelwise_map = Block3x3_leakRelu(ndf // 16, 1)
+        self.pixelwise_map = Block3x3_leakRelu(ndf * 8, 1)
 
         self.logits = nn.Sequential(
             nn.Conv2d(ndf * 8, 1, kernel_size=4, stride=4),
@@ -436,7 +436,7 @@ class D_NET256(nn.Module):
         self.img_code_s64 = downBlock(ndf * 16, ndf * 32)
         self.img_code_s64_1 = Block3x3_leakRelu(ndf * 32, ndf * 16)
         self.img_code_s64_2 = Block3x3_leakRelu(ndf * 16, ndf * 8)
-        self.pixelwise_map = Block3x3_leakRelu(ndf // 16, 1)
+        self.pixelwise_map = Block3x3_leakRelu(ndf * 8,1)
 
         self.logits = nn.Sequential(
             nn.Conv2d(ndf * 8, 1, kernel_size=4, stride=4),

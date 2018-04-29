@@ -294,11 +294,11 @@ class condGANTrainer(object):
 
         if len(real_logits) > 1 and cfg.TRAIN.COEFF.UNCOND_LOSS > 0:
             errD_real_uncond = cfg.TRAIN.COEFF.UNCOND_LOSS * \
-                criterion(real_logits[1], real_labels)
+                criterion(real_logits[2], real_labels)
             errD_wrong_uncond = cfg.TRAIN.COEFF.UNCOND_LOSS * \
-                criterion(wrong_logits[1], real_labels)
+                criterion(wrong_logits[2], real_labels)
             errD_fake_uncond = cfg.TRAIN.COEFF.UNCOND_LOSS * \
-                criterion(fake_logits[1], fake_labels)
+                criterion(fake_logits[2], fake_labels)
             #
             errD_real = errD_real + errD_real_uncond
             errD_wrong = errD_wrong + errD_wrong_uncond
@@ -332,7 +332,7 @@ class condGANTrainer(object):
  
             if len(outputs) > 1 and cfg.TRAIN.COEFF.UNCOND_LOSS > 0:
                 errG_patch = cfg.TRAIN.COEFF.UNCOND_LOSS *\
-                    criterion(outputs[1], real_labels)
+                    criterion(outputs[2], real_labels)
                 errG = errG + errG_patch
             errG_total = errG_total + errG + map_loss
             if flag == 0:
