@@ -1,0 +1,2 @@
+# GANTextToImage
+Trained Embedding Networks

@@ -19,7 +19,8 @@ from miscc.utils import mkdir_p
 from tensorboard import summary
 from tensorboard import FileWriter
 
-from model import G_NET, D_NET64, D_NET128, D_NET256, INCEPTION_V3
+#from model import G_NET, D_NET64, D_NET128, D_NET256, INCEPTION_V3
+from custom_model import G_NET, D_NET64, D_NET128, D_NET256, INCEPTION_V3
 
 # Helper functions
 def compute_mean_covariance(img):
@@ -274,6 +275,10 @@ class condGANTrainer(object):
         # Forward
         real_labels = self.real_labels[:batch_size]
         fake_labels = self.fake_labels[:batch_size]
+        
+        real_map = self.real_maps[idx]
+        fake_map = self.fake_maps[idx]    
+
         # for real
         real_logits = netD(real_imgs, mu.detach())
         wrong_logits = netD(wrong_imgs, mu.detach())
@@ -282,6 +287,11 @@ class condGANTrainer(object):
         errD_real = criterion(real_logits[0], real_labels)
         errD_wrong = criterion(wrong_logits[0], fake_labels)
         errD_fake = criterion(fake_logits[0], fake_labels)
+        
+        #error terms from probability maps
+        maploss_real = criterion(real_logits[1], real_map)
+        maploss_fake = criterion(wrong_logits[1], fake_map)
+
         if len(real_logits) > 1 and cfg.TRAIN.COEFF.UNCOND_LOSS > 0:
             errD_real_uncond = cfg.TRAIN.COEFF.UNCOND_LOSS * \
                 criterion(real_logits[1], real_labels)
@@ -294,9 +304,10 @@ class condGANTrainer(object):
             errD_wrong = errD_wrong + errD_wrong_uncond
             errD_fake = errD_fake + errD_fake_uncond
             #
-            errD = errD_real + errD_wrong + errD_fake
+            errD = errD_real + errD_wrong + errD_fake + maploss_real + maploss_fake
         else:
-            errD = errD_real + 0.5 * (errD_wrong + errD_fake)
+            #errD = errD_real + 0.5 * (errD_wrong + errD_fake)
+            errD = errD_real + errD_wrong + errD_fake + maploss_real + maploss_fake
         # backward
         errD.backward()
         # update parameters
@@ -317,11 +328,13 @@ class condGANTrainer(object):
         for i in range(self.num_Ds):
             outputs = self.netsD[i](self.fake_imgs[i], mu)
             errG = criterion(outputs[0], real_labels)
+            map_loss = criterion(outputs[1],self.real_maps[i]) 
+ 
             if len(outputs) > 1 and cfg.TRAIN.COEFF.UNCOND_LOSS > 0:
                 errG_patch = cfg.TRAIN.COEFF.UNCOND_LOSS *\
                     criterion(outputs[1], real_labels)
                 errG = errG + errG_patch
-            errG_total = errG_total + errG
+            errG_total = errG_total + errG + map_loss
             if flag == 0:
                 summary_D = summary.scalar('G_loss%d' % i, errG.data[0])
                 self.summary_writer.add_summary(summary_D, count)
@@ -369,12 +382,31 @@ class condGANTrainer(object):
         self.optimizerG, self.optimizersD = \
             define_optimizers(self.netG, self.netsD)
 
-        self.criterion = nn.BCELoss()
+        #self.criterion = nn.BCELoss()
+        self.criterion = nn.MSELoss()
 
         self.real_labels = \
             Variable(torch.FloatTensor(self.batch_size).fill_(1))
         self.fake_labels = \
             Variable(torch.FloatTensor(self.batch_size).fill_(0))
+
+        real_map_4 = \
+            Variable(torch.FloatTensor(self.batch_size,4,4).fill_(1))
+        fake_map_4 = \
+            Variable(torch.FloatTensor(self.batch_size,4,4).fill_(0))
+
+        real_map_8 = \
+            Variable(torch.FloatTensor(self.batch_size,8,8).fill_(1))
+        fake_map_8 = \
+            Variable(torch.FloatTensor(self.batch_size,8,8).fill_(0))
+
+        real_map_16 = \
+            Variable(torch.FloatTensor(self.batch_size,16,16).fill_(1))
+        fake_map_16 = \
+            Variable(torch.FloatTensor(self.batch_size,16,16).fill_(0))
+
+        self.real_maps = [real_map_4, real_map_8, real_map_16]
+        self.fake_maps = [fake_map_4, fake_map_8, fake_map_16]
 
         self.gradient_one = torch.FloatTensor([1.0])
         self.gradient_half = torch.FloatTensor([0.5])
@@ -388,6 +420,10 @@ class condGANTrainer(object):
             self.criterion.cuda()
             self.real_labels = self.real_labels.cuda()
             self.fake_labels = self.fake_labels.cuda()
+            for i in range(len(self.real_maps)):
+                self.real_maps[i] = self.real_maps[i].cuda()
+                self.fake_maps[i] = self.fake_maps[i].cuda()
+        
             self.gradient_one = self.gradient_one.cuda()
             self.gradient_half = self.gradient_half.cuda()
             noise, fixed_noise = noise.cuda(), fixed_noise.cuda()

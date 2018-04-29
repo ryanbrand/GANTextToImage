@@ -59,7 +59,6 @@ def conv3x3(in_planes, out_planes):
 
 # ############## G networks ################################################
 # Upsale the spatial size by a factor of 2
-
 def upBlock(in_planes, out_planes):
     block = nn.Sequential(
         nn.Upsample(scale_factor=2, mode='nearest'),
@@ -290,7 +289,7 @@ def Block3x3_leakRelu(in_planes, out_planes):
     return block
 
 
-# Downsale the spatial size by a factor of 2
+# Downscale the spatial size by a factor of 2
 def downBlock(in_planes, out_planes):
     block = nn.Sequential(
         nn.Conv2d(in_planes, out_planes, 4, 2, 1, bias=False),
@@ -300,7 +299,7 @@ def downBlock(in_planes, out_planes):
     return block
 
 
-# Downsale the spatial size by a factor of 16
+# Downscale the spatial size by a factor of 16
 def encode_image_by_16times(ndf):
     encode_img = nn.Sequential(
         # --> state size. ndf x in_size/2 x in_size/2
@@ -333,7 +332,8 @@ class D_NET64(nn.Module):
     def define_module(self):
         ndf = self.df_dim
         efg = self.ef_dim
-        self.img_code_s16 = encode_image_by_16times(ndf)
+        self.img_code_s16 = encode_image_by_16times(ndf) 
+        self.pixelwise_map = Block3x3_leakRelu(ndf // 16, 1)
 
         self.logits = nn.Sequential(
             nn.Conv2d(ndf * 8, 1, kernel_size=4, stride=4),
@@ -358,12 +358,14 @@ class D_NET64(nn.Module):
         else:
             h_c_code = x_code
 
-        output = self.logits(h_c_code)
+        output = self.logits(h_c_code) 
+        prob_map = self.pixelwise_map(x_code)
+
         if cfg.GAN.B_CONDITION:
             out_uncond = self.uncond_logits(x_code)
-            return [output.view(-1), out_uncond.view(-1)]
+            return [output.view(-1), prob_map.view(-1), out_uncond.view(-1)]
         else:
-            return [output.view(-1)]
+            return [output.view(-1), prob_map.view(-1)]
 
 
 # For 128 x 128 images
@@ -380,6 +382,7 @@ class D_NET128(nn.Module):
         self.img_code_s16 = encode_image_by_16times(ndf)
         self.img_code_s32 = downBlock(ndf * 8, ndf * 16)
         self.img_code_s32_1 = Block3x3_leakRelu(ndf * 16, ndf * 8)
+        self.pixelwise_map = Block3x3_leakRelu(ndf // 16, 1)
 
         self.logits = nn.Sequential(
             nn.Conv2d(ndf * 8, 1, kernel_size=4, stride=4),
@@ -392,8 +395,8 @@ class D_NET128(nn.Module):
             nn.Sigmoid())
 
     def forward(self, x_var, c_code=None):
-        x_code = self.img_code_s16(x_var)
-        x_code = self.img_code_s32(x_code)
+        x_code_16 = self.img_code_s16(x_var)
+        x_code = self.img_code_s32(x_code_16)
         x_code = self.img_code_s32_1(x_code)
 
         if cfg.GAN.B_CONDITION and c_code is not None:
@@ -407,11 +410,14 @@ class D_NET128(nn.Module):
             h_c_code = x_code
 
         output = self.logits(h_c_code)
+        
+        prob_map = self.pixelwise_map(x_code_16)
+
         if cfg.GAN.B_CONDITION:
             out_uncond = self.uncond_logits(x_code)
-            return [output.view(-1), out_uncond.view(-1)]
+            return [output.view(-1), prob_map.view(-1), out_uncond.view(-1)]
         else:
-            return [output.view(-1)]
+            return [output.view(-1), prob_map.view(-1)]
 
 
 # For 256 x 256 images
@@ -430,6 +436,7 @@ class D_NET256(nn.Module):
         self.img_code_s64 = downBlock(ndf * 16, ndf * 32)
         self.img_code_s64_1 = Block3x3_leakRelu(ndf * 32, ndf * 16)
         self.img_code_s64_2 = Block3x3_leakRelu(ndf * 16, ndf * 8)
+        self.pixelwise_map = Block3x3_leakRelu(ndf // 16, 1)
 
         self.logits = nn.Sequential(
             nn.Conv2d(ndf * 8, 1, kernel_size=4, stride=4),
@@ -442,7 +449,7 @@ class D_NET256(nn.Module):
                 nn.Sigmoid())
 
     def forward(self, x_var, c_code=None):
-        x_code = self.img_code_s16(x_var)
+        x_code_16 = self.img_code_s16(x_var)
         x_code = self.img_code_s32(x_code)
         x_code = self.img_code_s64(x_code)
         x_code = self.img_code_s64_1(x_code)
@@ -459,8 +466,12 @@ class D_NET256(nn.Module):
             h_c_code = x_code
 
         output = self.logits(h_c_code)
+        prob_map = self.pixelwise_map(x_code_16)
+
         if cfg.GAN.B_CONDITION:
             out_uncond = self.uncond_logits(x_code)
-            return [output.view(-1), out_uncond.view(-1)]
+            return [output.view(-1), out_uncond.view(-1), prob_map.view(-1)]
         else:
-            return [output.view(-1)]
+            return [output.view(-1), prob_map.view(-1)]
+
+

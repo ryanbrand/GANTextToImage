@@ -1,15 +1,4 @@
 from __future__ import print_function
-import torch
-import torchvision.transforms as transforms
-from torch.utils.serialization import load_lua
-
-
-import torch.backends.cudnn as cudnn
-import torch
-import torch.nn as nn
-from torch.autograd import Variable
-import torch.optim as optim
-import torchvision.utils as vutils
 import numpy as np
 import os
 import time
@@ -24,6 +13,15 @@ import pprint
 import datetime
 import dateutil.tz
 import time
+
+import torch
+import torch.backends.cudnn as cudnn
+import torch.nn as nn
+import torch.optim as optim
+from torch.autograd import Variable
+from torch.utils.serialization import load_lua
+import torchvision.transforms as transforms
+import torchvision.utils as vutils
 
 dir_path = (os.path.abspath(os.path.join(os.path.realpath(__file__), './.')))
 sys.path.append(dir_path)
@@ -59,7 +57,7 @@ def save_superimages(images_list, save_dir, imsize):
         super_img = torch.cat(super_img, 0)
         vutils.save_image(super_img, savename, nrow=10, normalize=True)
 
-def save_singleimages(images,save_dir, sentenceID, imsize):
+def save_singleimages(images, save_dir, sentenceID, imsize):
     for i in range(images.size(0)):
         s_tmp = '%s/single_samples' %\
             (save_dir)
@@ -102,7 +100,7 @@ def test(cfg_file, embedding_t7_path):
     print(netG)
     #state_dict = torch.load('../gan/models/birds_3stages/netG_26000.pth')
     print(cfg.TRAIN.NET_G)
-    state_path = '../gan/' + cfg.TRAIN.NET_G
+    state_path = '/home/ubuntu/GANTextToImage/gan/' + cfg.TRAIN.NET_G
     state_dict = torch.load(state_path, map_location=lambda storage, loc: storage)
     netG.load_state_dict(state_dict)
     # print('Load ', '../gan/models/flowers_1stage/netG_6000.pth')
@@ -146,7 +144,7 @@ def test(cfg_file, embedding_t7_path):
             # fake_img_list.append(fake_imgs[1].data.cpu())
         fake_img_list.append(fake_imgs[2].data.cpu())
     else:
-        save_singleimages(fake_imgs[-1], '.', 0, 256)
+        save_singleimages(fake_imgs[-1], '/home/ubuntu/GANTextToImage/static', 0, 256)
             # self.save_singleimages(fake_imgs[-2], filenames,
             #                        save_dir, split_dir, i, 128)
             # self.save_singleimages(fake_imgs[-3], filenames,
@@ -170,7 +168,7 @@ if __name__ == "__main__":
     parser.add_argument('--gpu', dest='gpu_id', type=str, default='0')
     parser.add_argument('--data_dir', dest='data_dir', type=str, default='.')
     parser.add_argument('--manualSeed', type=int, help='manual seed')
-    
+ 
     args = parser.parse_args()
-    
+ 
     test(args.cfg_file, args.embedding_file_path)

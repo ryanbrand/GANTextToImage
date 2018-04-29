@@ -1,3 +1,3 @@
 # GANTextToImage
-Data Folder
+Output Folder
 

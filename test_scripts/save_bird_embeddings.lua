@@ -19,11 +19,11 @@ for k,v in pairs(dict) do
   ivocab[v] = k
 end
 
-opt = {
-  query_str='',
-  embedding_net='',
-  gpu=0,
-}
+cmd = torch.CmdLine()
+cmd:option('-query_str','','Query String.')
+cmd:option('-embedding_net','','Embedding net.')
+cmd:option('-gpu',0,'GPU')
+opt = cmd:parse(arg)
 
 print(opt.query_str)
 print(opt.embedding_net)
@@ -57,5 +57,5 @@ end
 raw_txt = opt.query_str
 fea_txt = net_txt:forward(txt):clone():float()
 
-torch.save('bird_test_embedding.t7', fea_txt)
+torch.save('/home/ubuntu/repo/test_scripts/bird_test_embedding.t7', fea_txt)
 
