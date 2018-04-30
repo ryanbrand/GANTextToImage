@@ -22,6 +22,7 @@ Create anaconda3 environment using `conda create -n <name> --file pytorch_requir
 - `python-dateutil`
 - `easydict`
 - `pandas`
+- `flask`
 
 ### Training (Embedding Network):
 
